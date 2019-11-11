@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_codeboard-master.app" default="compile.module.codeboard-master.app">
+  <dirname property="module.codeboard-master.app.basedir" file="${ant.file.module_codeboard-master.app}"/>
+  
+  <property name="module.jdk.home.codeboard-master.app" value="${jdk.home.android_api_28_platform}"/>
+  <property name="module.jdk.bin.codeboard-master.app" value="${jdk.bin.android_api_28_platform}"/>
+  <property name="module.jdk.classpath.codeboard-master.app" value="jdk.classpath.android_api_28_platform"/>
+  
+  <property name="compiler.args.codeboard-master.app" value="-encoding UTF-8 -source 7 -target 7 ${compiler.args}"/>
+  
+  <property name="codeboard-master.app.output.dir" value="${module.codeboard-master.app.basedir}/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes"/>
+  <property name="codeboard-master.app.testoutput.dir" value="${module.codeboard-master.app.basedir}/build/intermediates/javac/debugUnitTest/compileDebugUnitTestJavaWithJavac/classes"/>
+  
+  <path id="codeboard-master.app.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="codeboard-master.app.module.production.classpath">
+    <path refid="${module.jdk.classpath.codeboard-master.app}"/>
+    <path refid="library.gradle:_com.android.support:support-fragment:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:localbroadcastmanager:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:documentfile:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:animated-vector-drawable:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-v13:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:slidingpanelayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:viewmodel:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:appcompat-v7:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.github.apl-devs:appintro:v4.2.3@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:loader:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.core:runtime:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:livedata-core:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:collections:28.0.0@jar.classpath"/>
+    <path refid="library.gradle:_com.android.support:cursoradapter:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:runtime:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-compat:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-core-ui:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:asynclayoutinflater:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:print:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.core:common:1.1.1@jar.classpath"/>
+    <path refid="library.gradle:_com.android.support:versionedparcelable:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:viewpager:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-core-utils:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-vector-drawable:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-annotations:28.0.0@jar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:common:1.1.1@jar.classpath"/>
+    <path refid="library.gradle:_com.android.support:interpolator:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:livedata:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:drawerlayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:coordinatorlayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:customview:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:swiperefreshlayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-v4:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-media-compat:28.0.0@aar.classpath"/>
+  </path>
+  
+  <path id="codeboard-master.app.runtime.production.module.classpath">
+    <pathelement location="${codeboard-master.app.output.dir}"/>
+    <path refid="library.gradle:_com.android.support:support-fragment:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:localbroadcastmanager:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:documentfile:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:animated-vector-drawable:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-v13:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:slidingpanelayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:viewmodel:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:appcompat-v7:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.github.apl-devs:appintro:v4.2.3@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:loader:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.core:runtime:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:livedata-core:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:collections:28.0.0@jar.classpath"/>
+    <path refid="library.gradle:_com.android.support:cursoradapter:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:runtime:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-compat:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-core-ui:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:asynclayoutinflater:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:print:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.core:common:1.1.1@jar.classpath"/>
+    <path refid="library.gradle:_com.android.support:versionedparcelable:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:viewpager:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-core-utils:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-vector-drawable:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-annotations:28.0.0@jar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:common:1.1.1@jar.classpath"/>
+    <path refid="library.gradle:_com.android.support:interpolator:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:livedata:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:drawerlayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:coordinatorlayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:customview:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:swiperefreshlayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-v4:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-media-compat:28.0.0@aar.classpath"/>
+  </path>
+  
+  <path id="codeboard-master.app.module.classpath">
+    <path refid="${module.jdk.classpath.codeboard-master.app}"/>
+    <pathelement location="${codeboard-master.app.output.dir}"/>
+    <path refid="library.gradle:_com.android.support:support-fragment:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:localbroadcastmanager:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:documentfile:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:animated-vector-drawable:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-v13:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:slidingpanelayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:viewmodel:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:appcompat-v7:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.github.apl-devs:appintro:v4.2.3@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:loader:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.core:runtime:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:livedata-core:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:collections:28.0.0@jar.classpath"/>
+    <path refid="library.gradle:_com.android.support:cursoradapter:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:runtime:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-compat:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-core-ui:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:asynclayoutinflater:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:print:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.core:common:1.1.1@jar.classpath"/>
+    <path refid="library.gradle:_com.android.support:versionedparcelable:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:viewpager:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-core-utils:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-vector-drawable:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-annotations:28.0.0@jar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:common:1.1.1@jar.classpath"/>
+    <path refid="library.gradle:_com.android.support:interpolator:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:livedata:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:drawerlayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:coordinatorlayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:customview:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:swiperefreshlayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-v4:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-media-compat:28.0.0@aar.classpath"/>
+  </path>
+  
+  <path id="codeboard-master.app.runtime.module.classpath">
+    <pathelement location="${codeboard-master.app.testoutput.dir}"/>
+    <pathelement location="${codeboard-master.app.output.dir}"/>
+    <path refid="library.gradle:_com.android.support:support-fragment:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:localbroadcastmanager:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:documentfile:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:animated-vector-drawable:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-v13:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:slidingpanelayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:viewmodel:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:appcompat-v7:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.github.apl-devs:appintro:v4.2.3@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:loader:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.core:runtime:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:livedata-core:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:collections:28.0.0@jar.classpath"/>
+    <path refid="library.gradle:_com.android.support:cursoradapter:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:runtime:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-compat:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-core-ui:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:asynclayoutinflater:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:print:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.core:common:1.1.1@jar.classpath"/>
+    <path refid="library.gradle:_com.android.support:versionedparcelable:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:viewpager:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-core-utils:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-vector-drawable:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-annotations:28.0.0@jar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:common:1.1.1@jar.classpath"/>
+    <path refid="library.gradle:_com.android.support:interpolator:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_android.arch.lifecycle:livedata:1.1.1@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:drawerlayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:coordinatorlayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:customview:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:swiperefreshlayout:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-v4:28.0.0@aar.classpath"/>
+    <path refid="library.gradle:_com.android.support:support-media-compat:28.0.0@aar.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.codeboard-master.app">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.codeboard-master.app">
+    <patternset refid="excluded.from.module.codeboard-master.app"/>
+  </patternset>
+  
+  <path id="codeboard-master.app.module.sourcepath">
+    <dirset dir="${module.codeboard-master.app.basedir}">
+      <include name="build/generated/source/apt/debug"/>
+      <include name="build/generated/source/buildConfig/debug"/>
+      <include name="build/generated/source/rs/debug"/>
+      <include name="build/generated/res/rs/debug"/>
+      <include name="build/generated/res/resValues/debug"/>
+      <include name="src/main/res"/>
+      <include name="src/main/java"/>
+    </dirset>
+  </path>
+  
+  <path id="codeboard-master.app.module.test.sourcepath">
+    <dirset dir="${module.codeboard-master.app.basedir}">
+      <include name="src/androidTest/java"/>
+      <include name="src/test/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.codeboard-master.app" depends="compile.module.codeboard-master.app.production,compile.module.codeboard-master.app.tests" description="Compile module codeboard-master.app"/>
+  
+  <target name="compile.module.codeboard-master.app.production" depends="register.custom.compilers" description="Compile module codeboard-master.app; production classes">
+    <mkdir dir="${codeboard-master.app.output.dir}"/>
+    <javac2 destdir="${codeboard-master.app.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.codeboard-master.app}/javac">
+      <compilerarg line="${compiler.args.codeboard-master.app}"/>
+      <bootclasspath refid="codeboard-master.app.module.bootclasspath"/>
+      <classpath refid="codeboard-master.app.module.production.classpath"/>
+      <src refid="codeboard-master.app.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.codeboard-master.app"/>
+    </javac2>
+    
+    <copy todir="${codeboard-master.app.output.dir}">
+      <fileset dir="${module.codeboard-master.app.basedir}/build/generated/source/apt/debug">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.codeboard-master.app.basedir}/build/generated/source/buildConfig/debug">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.codeboard-master.app.basedir}/build/generated/source/rs/debug">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.codeboard-master.app.basedir}/build/generated/res/rs/debug">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.codeboard-master.app.basedir}/build/generated/res/resValues/debug">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.codeboard-master.app.basedir}/src/main/res">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.codeboard-master.app.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.codeboard-master.app.tests" depends="register.custom.compilers,compile.module.codeboard-master.app.production" description="compile module codeboard-master.app; test classes" unless="skip.tests">
+    <mkdir dir="${codeboard-master.app.testoutput.dir}"/>
+    <javac2 destdir="${codeboard-master.app.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.codeboard-master.app}/javac">
+      <compilerarg line="${compiler.args.codeboard-master.app}"/>
+      <bootclasspath refid="codeboard-master.app.module.bootclasspath"/>
+      <classpath refid="codeboard-master.app.module.classpath"/>
+      <src refid="codeboard-master.app.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.codeboard-master.app"/>
+    </javac2>
+    
+    <copy todir="${codeboard-master.app.testoutput.dir}">
+      <fileset dir="${module.codeboard-master.app.basedir}/src/androidTest/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.codeboard-master.app.basedir}/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.codeboard-master.app" description="cleanup module">
+    <delete dir="${codeboard-master.app.output.dir}"/>
+    <delete dir="${codeboard-master.app.testoutput.dir}"/>
+  </target>
+</project>

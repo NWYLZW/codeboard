@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_codeboard-master" default="compile.module.codeboard-master">
+  <dirname property="module.codeboard-master.basedir" file="${ant.file.module_codeboard-master}"/>
+  
+  <property name="module.jdk.home.codeboard-master" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.codeboard-master" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.codeboard-master" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.codeboard-master" value="-encoding UTF-8 -source 7 -target 7 ${compiler.args}"/>
+  
+  <property name="codeboard-master.output.dir" value="${module.codeboard-master.basedir}/build/classes/production/codeboard-master"/>
+  <property name="codeboard-master.testoutput.dir" value="${module.codeboard-master.basedir}/build/classes/test/codeboard-master"/>
+  
+  <path id="codeboard-master.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="codeboard-master.module.production.classpath">
+    <path refid="${module.jdk.classpath.codeboard-master}"/>
+  </path>
+  
+  <path id="codeboard-master.runtime.production.module.classpath">
+    <pathelement location="${codeboard-master.output.dir}"/>
+  </path>
+  
+  <path id="codeboard-master.module.classpath">
+    <path refid="${module.jdk.classpath.codeboard-master}"/>
+    <pathelement location="${codeboard-master.output.dir}"/>
+  </path>
+  
+  <path id="codeboard-master.runtime.module.classpath">
+    <pathelement location="${codeboard-master.testoutput.dir}"/>
+    <pathelement location="${codeboard-master.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.codeboard-master">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.codeboard-master">
+    <patternset refid="excluded.from.module.codeboard-master"/>
+  </patternset>
+  
+  
+  <target name="compile.module.codeboard-master" depends="compile.module.codeboard-master.production,compile.module.codeboard-master.tests" description="Compile module codeboard-master"/>
+  
+  <target name="compile.module.codeboard-master.production" depends="register.custom.compilers" description="Compile module codeboard-master; production classes"/>
+  
+  <target name="compile.module.codeboard-master.tests" depends="register.custom.compilers,compile.module.codeboard-master.production" description="compile module codeboard-master; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.codeboard-master" description="cleanup module">
+    <delete dir="${codeboard-master.output.dir}"/>
+    <delete dir="${codeboard-master.testoutput.dir}"/>
+  </target>
+</project>

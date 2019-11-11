@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_app" default="compile.module.app">
+  <dirname property="module.app.basedir" file="${ant.file.module_app}"/>
+  
+  <property name="module.jdk.home.app" value="${jdk.home.11}"/>
+  <property name="module.jdk.bin.app" value="${jdk.bin.11}"/>
+  <property name="module.jdk.classpath.app" value="jdk.classpath.11"/>
+  
+  <property name="compiler.args.app" value="-encoding UTF-8 -source 7 -target 7 ${compiler.args}"/>
+  
+  <property name="app.output.dir" value="${module.app.basedir}/../build/classes/production/app"/>
+  <property name="app.testoutput.dir" value="${module.app.basedir}/../build/classes/test/app"/>
+  
+  <path id="app.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="app.module.production.classpath">
+    <path refid="${module.jdk.classpath.app}"/>
+  </path>
+  
+  <path id="app.runtime.production.module.classpath">
+    <pathelement location="${app.output.dir}"/>
+  </path>
+  
+  <path id="app.module.classpath">
+    <path refid="${module.jdk.classpath.app}"/>
+    <pathelement location="${app.output.dir}"/>
+  </path>
+  
+  <path id="app.runtime.module.classpath">
+    <pathelement location="${app.testoutput.dir}"/>
+    <pathelement location="${app.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.app">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.app">
+    <patternset refid="excluded.from.module.app"/>
+  </patternset>
+  
+  
+  <target name="compile.module.app" depends="compile.module.app.production,compile.module.app.tests" description="Compile module app"/>
+  
+  <target name="compile.module.app.production" depends="register.custom.compilers" description="Compile module app; production classes"/>
+  
+  <target name="compile.module.app.tests" depends="register.custom.compilers,compile.module.app.production" description="compile module app; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.app" description="cleanup module">
+    <delete dir="${app.output.dir}"/>
+    <delete dir="${app.testoutput.dir}"/>
+  </target>
+</project>

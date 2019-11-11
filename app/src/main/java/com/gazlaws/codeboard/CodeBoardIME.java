@@ -2,6 +2,7 @@ package com.gazlaws.codeboard;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
@@ -17,9 +18,10 @@ import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.media.MediaPlayer; // for keypress sound
 
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.*;
 
 
 import static android.view.KeyEvent.KEYCODE_CTRL_LEFT;
@@ -27,16 +29,14 @@ import static android.view.KeyEvent.KEYCODE_SHIFT_LEFT;
 import static android.view.KeyEvent.META_CTRL_ON;
 import static android.view.KeyEvent.META_SHIFT_ON;
 
-
-
 /*Created by Ruby(aka gazlaws) on 13/02/2016.
  */
-
 
 public class CodeBoardIME extends InputMethodService
         implements KeyboardView.OnKeyboardActionListener {
     private KeyboardView kv;
     private Keyboard keyboard;
+
     EditorInfo sEditorInfo;
     private boolean vibratorOn;
     private boolean soundOn;
@@ -44,266 +44,111 @@ public class CodeBoardIME extends InputMethodService
     private boolean shift = false;
     private boolean ctrl = false;
     private int mKeyboardState = R.integer.keyboard_normal;
-    private int mLayout, mToprow, mSize;
+    private int mLayout, mSize;
     private Timer timerLongPress = null;
     private boolean switchedKeyboard=false;
 
-
-
-
-    public void onKeyCtrl(int code, InputConnection ic) {
-        long now2 = System.currentTimeMillis();
-        switch (code) {
-            case 'a':
-            case 'A':
-                if (sEditorInfo.imeOptions == 1342177286)//fix for DroidEdit
-                {
-                    getCurrentInputConnection().performContextMenuAction(android.R.id.selectAll);
-                } else
-                    ic.sendKeyEvent(new KeyEvent(now2 + 1, now2 + 1, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_A, 0, META_CTRL_ON));
-                break;
-            case 'c':
-            case 'C':
-                if (sEditorInfo.imeOptions == 1342177286)//fix for DroidEdit
-                {
-                    getCurrentInputConnection().performContextMenuAction(android.R.id.copy);
-                } else
-                    ic.sendKeyEvent(new KeyEvent(now2 + 1, now2 + 1, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_C, 0, META_CTRL_ON));
-                break;
-            case 'v':
-            case 'V':
-                if (sEditorInfo.imeOptions == 1342177286)//fix for DroidEdit
-                {
-                    getCurrentInputConnection().performContextMenuAction(android.R.id.paste);
-                } else
-                    ic.sendKeyEvent(new KeyEvent(now2 + 1, now2 + 1, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_V, 0, META_CTRL_ON));
-                break;
-            case 'x':
-            case 'X':
-                if (sEditorInfo.imeOptions == 1342177286)//fix for DroidEdit
-                {
-                    getCurrentInputConnection().performContextMenuAction(android.R.id.cut);
-                } else
-                    ic.sendKeyEvent(new KeyEvent(now2 + 1, now2 + 1, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_X, 0, META_CTRL_ON));
-                break;
-            case 'z':
-            case 'Z':
-                if (shift) {
-                    if (ic != null) {
-                        if (sEditorInfo.imeOptions == 1342177286)//fix for DroidEdit
-                        {
-                            getCurrentInputConnection().performContextMenuAction(android.R.id.redo);
-                        } else
-                            ic.sendKeyEvent(new KeyEvent(now2 + 1, now2 + 1, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_Z, 0, META_CTRL_ON | META_SHIFT_ON));
-
-                        long nowS = System.currentTimeMillis();
-                        shift = false;
-                        ic.sendKeyEvent(new KeyEvent(nowS, nowS, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT, 0, META_SHIFT_ON));
-
-                        shiftLock = false;
-                        shiftKeyUpdateView();
-                    }
-                } else {
-                    //Log.e("ctrl", "z");
-                    if (sEditorInfo.imeOptions == 1342177286)//fix for DroidEdit
-                    {
-                        getCurrentInputConnection().performContextMenuAction(android.R.id.undo);
-                    } else
-                        ic.sendKeyEvent(new KeyEvent(now2 + 1, now2 + 1, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_Z, 0, META_CTRL_ON));
-
-                }
-
-                break;
-
-            case 'b':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_B, 0, META_CTRL_ON));
-                break;
-
-            case 'd':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_D, 0, META_CTRL_ON));
-                break;
-
-            case 'e':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_E, 0, META_CTRL_ON));
-                break;
-            case 'f':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_F, 0, META_CTRL_ON));
-                break;
-            case 'g':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_G, 0, META_CTRL_ON));
-                break;
-            case 'h':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_H, 0, META_CTRL_ON));
-                break;
-            case 'i':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_I, 0, META_CTRL_ON));
-                break;
-            case 'j':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_J, 0, META_CTRL_ON));
-                break;
-
-            case 'k':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_K, 0, META_CTRL_ON));
-                break;
-            case 'l':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_L, 0, META_CTRL_ON));
-                break;
-            case 'm':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_M, 0, META_CTRL_ON));
-                break;
-            case 'n':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_N, 0, META_CTRL_ON));
-                break;
-
-            case 'o':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_O, 0, META_CTRL_ON));
-                break;
-            case 'p':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_P, 0, META_CTRL_ON));
-                break;
-
-
-            case 'q':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_P, 0, META_CTRL_ON));
-                break;
-            case 'r':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_R, 0, META_CTRL_ON));
-                break;
-
-            case 's':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_S, 0, META_CTRL_ON));
-                break;
-
-            case 't':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_T, 0, META_CTRL_ON));
-                break;
-
-            case 'u':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_U, 0, META_CTRL_ON));
-                break;
-
-            case 'w':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_W, 0, META_CTRL_ON));
-                break;
-
-
-            case 'y':
-                ic.sendKeyEvent(new KeyEvent(
-                        now2 + 1, now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_Y, 0, META_CTRL_ON));
-                break;
-
-            default:
-                if (Character.isLetter(code) && shift) {
-                    code = Character.toUpperCase(code);
-                    ic.commitText(String.valueOf(code), 1);
-                    if (!shiftLock) {
-                        long nowS = System.currentTimeMillis();
-                        shift = false;
-                        ic.sendKeyEvent(new KeyEvent(nowS, nowS, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT, 0, META_SHIFT_ON));
-
-                        //Log.e("CodeboardIME", "Unshifted b/c no lock");
-                    }
-                    shiftKeyUpdateView();
-                }
-                break;
-
-
-        }
-    }
+    int pageNum = 0;
+    ArrayList customArr = new ArrayList<Integer>();
+    Keyboard.Key pageNumKey = null;
+    private String filePath = "/data/data/com.gazlaws.codeboard/files/customStrMenber";
+    private ArrayList customStrMenber;
+    final private int D_value = 68;
 
     @Override
+    public View onCreateInputView() {
+        SharedPreferences pre = getSharedPreferences("MY_SHARED_PREF", MODE_PRIVATE);
+
+        int color;
+        KeyboardView myTemp;
+        String BackgroundColor[] = {"263238","eceff1","000000","ffffff","0d47a1","4a148c"};
+        int RADIO_INDEX_COLOUR = pre.getInt("RADIO_INDEX_COLOUR", 0);
+        switch (RADIO_INDEX_COLOUR) {
+            case 0: case 1: case 2: case 3: case 4: case 5:
+                color = Color.parseColor("#"+BackgroundColor[RADIO_INDEX_COLOUR]);
+                break;
+            case 6:
+                color = pre.getInt("MyCustomColor",0);
+                break;
+            default:
+                color = Color.parseColor("#"+BackgroundColor[RADIO_INDEX_COLOUR]);
+                break;
+        }
+        if(Color.red(color)<128&&Color.blue(color)<128&&Color.green(color)<128)
+            myTemp = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard_dark, null);
+        else
+            myTemp = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard, null);
+        myTemp.setBackgroundColor(color);
+        kv = myTemp;
+
+        ctrl = false;
+        shift = false;
+        if (pre.getInt("PREVIEW", 0) == 1) {
+            kv.setPreviewEnabled(true);
+        } else kv.setPreviewEnabled(false);
+
+        if (pre.getInt("SOUND", 1) == 1) {
+            soundOn = true;
+        } else soundOn = false;
+
+        if (pre.getInt("VIBRATE", 1) == 1) {
+            vibratorOn = true;
+        } else vibratorOn = false;
+
+        mLayout = pre.getInt("RADIO_INDEX_LAYOUT", 0);
+        mSize = pre.getInt("SIZE", 2);
+        mKeyboardState = R.integer.keyboard_normal;
+        //reset to normal
+
+        Keyboard keyboard = chooseKB(mLayout, mSize, mKeyboardState);
+        kv.setKeyboard(keyboard);
+        kv.setOnKeyboardActionListener(this);
+
+        return kv;
+    }
+    private void onSYM(){
+        if (kv != null) {
+            if (mKeyboardState == R.integer.keyboard_normal) {
+                //change to symbol keyboard
+                Keyboard symbolKeyboard = chooseKB(mLayout, mSize, R.integer.keyboard_sym);
+
+                kv.setKeyboard(symbolKeyboard);
+
+                mKeyboardState = R.integer.keyboard_sym;
+                readMenber();
+            } else if (mKeyboardState == R.integer.keyboard_sym) {
+                //change to normal keyboard
+                Keyboard normalKeyboard = chooseKB(mLayout, mSize, R.integer.keyboard_normal);
+
+                kv.setKeyboard(normalKeyboard);
+                mKeyboardState = R.integer.keyboard_normal;
+            }
+            controlKeyUpdateView();
+            shiftKeyUpdateView();
+        }
+    }
+    private void trunPage(int code){
+        int nextPage = pageNum+(code-30000);
+        int maxPage = customStrMenber.size()/5+1;
+        if(nextPage>=0 && nextPage<maxPage){
+            pageNum = nextPage;
+            updataCustomStr();
+        }
+    }
+    @Override
     public void onKey(int primaryCode, int[] KeyCodes) {
-
-
         InputConnection ic = getCurrentInputConnection();
         keyboard = kv.getKeyboard();
 
         switch (primaryCode) {
+            case 30001:
+            case 29999:
+                trunPage(primaryCode);
+                break;
 
-            case 53737:
-                getCurrentInputConnection().performContextMenuAction(android.R.id.selectAll);
-                break;
-            case 53738:
-                getCurrentInputConnection().performContextMenuAction(android.R.id.cut);
-                break;
-            case 53739:
-                getCurrentInputConnection().performContextMenuAction(android.R.id.copy);
-                break;
-            case 53740:
-                getCurrentInputConnection().performContextMenuAction(android.R.id.paste);
-                break;
-            case 53741:
-                getCurrentInputConnection().performContextMenuAction(android.R.id.undo);
-                break;
-            case 53742:
-                getCurrentInputConnection().performContextMenuAction(android.R.id.redo);
-                break;
             case Keyboard.KEYCODE_DELETE:
                 sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL);
                 break;
-
             case Keyboard.KEYCODE_DONE:
                 sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER);
                 break;
@@ -322,26 +167,7 @@ public class CodeBoardIME extends InputMethodService
                     imm.showInputMethodPicker();
                 break;
             case -15:
-                if (kv != null) {
-                    if (mKeyboardState == R.integer.keyboard_normal) {
-                        //change to symbol keyboard
-                        Keyboard symbolKeyboard = chooseKB(mLayout, mToprow, mSize, R.integer.keyboard_sym);
-
-                        kv.setKeyboard(symbolKeyboard);
-
-                        mKeyboardState = R.integer.keyboard_sym;
-                    } else if (mKeyboardState == R.integer.keyboard_sym) {
-                        //change to normal keyboard
-                        Keyboard normalKeyboard = chooseKB(mLayout, mToprow, mSize, R.integer.keyboard_normal);
-
-                        kv.setKeyboard(normalKeyboard);
-                        mKeyboardState = R.integer.keyboard_normal;
-                    }
-                    controlKeyUpdateView();
-                    shiftKeyUpdateView();
-
-                }
-
+                onSYM();
                 break;
 
             case 17:
@@ -364,15 +190,9 @@ public class CodeBoardIME extends InputMethodService
                     ic.sendKeyEvent(new KeyEvent(nowShift, nowShift, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT, 0, META_SHIFT_ON));
                 else
                     ic.sendKeyEvent(new KeyEvent(nowShift, nowShift, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT, 0, META_SHIFT_ON));
-
-                if (shiftLock) {
-                    shift = true;
-                    shiftKeyUpdateView();
-                } else {
-                    shift = !shift;
-                    shiftKeyUpdateView();
-                }
-
+                if (shiftLock) shift = true;
+                else shift = !shift;
+                shiftKeyUpdateView();
                 break;
 
             case 9:
@@ -429,10 +249,8 @@ public class CodeBoardIME extends InputMethodService
         }
 
     }
-
     @Override
     public void onPress(final int primaryCode) {
-        
         if (soundOn) {
             MediaPlayer keypressSoundPlayer = MediaPlayer.create(this, R.raw.keypress_sound);
             keypressSoundPlayer.start();
@@ -444,43 +262,32 @@ public class CodeBoardIME extends InputMethodService
             });
         }
         if (vibratorOn) {
-
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             if(vibrator!=null)
                 vibrator.vibrate(20);
         }
         if (timerLongPress != null)
             timerLongPress.cancel();
-
         timerLongPress = new Timer();
-
         timerLongPress.schedule(new TimerTask() {
 
             @Override
             public void run() {
-
                 try {
-
                     Handler uiHandler = new Handler(Looper.getMainLooper());
-
                     Runnable runnable = new Runnable() {
 
                         @Override
                         public void run() {
-
                             try {
-
                                 CodeBoardIME.this.onKeyLongPress(primaryCode);
-
                             } catch (Exception e) {
                                 Log.e(CodeBoardIME.class.getSimpleName(), "uiHandler.run: " + e.getMessage(), e);
                             }
 
                         }
                     };
-
                     uiHandler.post(runnable);
-
                 } catch (Exception e) {
                     Log.e(CodeBoardIME.class.getSimpleName(), "Timer.run: " + e.getMessage(), e);
                 }
@@ -489,22 +296,14 @@ public class CodeBoardIME extends InputMethodService
         }, ViewConfiguration.getLongPressTimeout());
 
     }
-
-    @Override
-    public void onRelease(int primaryCode) {
-        if (timerLongPress != null)
-            timerLongPress.cancel();
-
-    }
-
     public void onKeyLongPress(int keyCode) {
-        // Process long-click here
+        // LongPress ESC Exit keyBoard
+        if(keyCode == 27){
+            kv.closing();
+        }
         if (keyCode == 16) {
             shiftLock = !shiftLock;
-            //Log.e("CodeBoardIME", "long press" + Boolean.toString(shiftLock));
-            //and onKey will now happen
         }
-
         if (keyCode == 32) {
             switchedKeyboard=true;
             InputMethodManager imm = (InputMethodManager)
@@ -512,160 +311,142 @@ public class CodeBoardIME extends InputMethodService
             if(imm!=null)
                 imm.showInputMethodPicker();
         }
-
         Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if(vibrator!=null)
             vibrator.vibrate(50);
     }
+    @Override
+    public void onRelease(int primaryCode) {
+        if (timerLongPress != null)
+            timerLongPress.cancel();
+    }
 
+    private void gotoEnd(String str0){
+        int end = str0.indexOf("$END$");
+        if(end!=-1){
+            for(int i = 0;i < str0.length()-end-5;i++)
+                sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT);
+        }else return;
+    }
     @Override
     public void onText(CharSequence text) {
         InputConnection ic = getCurrentInputConnection();
-        if (text.toString().contains("for")) {
-            ic.commitText(text, 1);
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT);
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT);
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT);
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT);
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT);
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT);
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT);
-
-        } else {
-            ic.commitText(text, 1);
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT);
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT);
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT);
+        if(text.toString().substring(0,2).equals("00")){
+            int count = Integer.parseInt(text.toString().substring(2))+pageNum*5;
+            if(count>=customStrMenber.size())
+                text = "";
+            else
+                text = ((CustomStr) customStrMenber.get(count)).customStr;
         }
+        CharSequence temp = text.toString().replace("$END$","");
+        ic.commitText(temp, 1);
+        gotoEnd(text.toString());
     }
 
-    @Override
-    public void swipeDown() {
-
-        kv.closing();
-
+    private boolean Judge_default_Ctrl(int code){
+        char arr[] = {'a','A','c','C','v','V','x','X','z','Z'};
+        for(int i = 0;i < 10;i++){
+            if(code==arr[i])
+                return false;}
+        return true;
     }
+    public void onKeyCtrl(int code, InputConnection ic) {
+        long now2 = System.currentTimeMillis();
 
-    @Override
-    public void swipeLeft() {
+        //原来写在这的代码简直是一坨屎[ 手动微笑:) ]
+        if(code>'a'&&code<'z'||code>'A'&&code<'Z'){
+            if(Judge_default_Ctrl(code)){
+                System.out.println(123);
+                ic.sendKeyEvent(new KeyEvent(
+                        now2 + 1, now2 + 1,
+                        KeyEvent.ACTION_DOWN,
+                        code-D_value, 0, META_CTRL_ON));
+            } else {}}
+        else
+            switch (code) {
+                case 'a': case 'A':{
+                    if (sEditorInfo.imeOptions == 1342177286)//fix for DroidEdit
+                    {
+                        getCurrentInputConnection().performContextMenuAction(android.R.id.selectAll);
+                    } else
+                        ic.sendKeyEvent(new KeyEvent(now2 + 1, now2 + 1, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_A, 0, META_CTRL_ON));
+                    break;}
+                case 'c': case 'C':{
+                    if (sEditorInfo.imeOptions == 1342177286)//fix for DroidEdit
+                    {
+                        getCurrentInputConnection().performContextMenuAction(android.R.id.copy);
+                    } else
+                        ic.sendKeyEvent(new KeyEvent(now2 + 1, now2 + 1, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_C, 0, META_CTRL_ON));
+                    break;}
+                case 'v': case 'V':{
+                    if (sEditorInfo.imeOptions == 1342177286)//fix for DroidEdit
+                    {
+                        getCurrentInputConnection().performContextMenuAction(android.R.id.paste);
+                    } else
+                        ic.sendKeyEvent(new KeyEvent(now2 + 1, now2 + 1, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_V, 0, META_CTRL_ON));
+                    break;}
+                case 'x': case 'X':{
+                    if (sEditorInfo.imeOptions == 1342177286)//fix for DroidEdit
+                    {
+                        getCurrentInputConnection().performContextMenuAction(android.R.id.cut);
+                    } else
+                        ic.sendKeyEvent(new KeyEvent(now2 + 1, now2 + 1, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_X, 0, META_CTRL_ON));
+                    break;}
+                case 'z': case 'Z':{
+                    if (shift) {
+                        if (ic != null) {
+                            if (sEditorInfo.imeOptions == 1342177286)//fix for DroidEdit
+                            {
+                                getCurrentInputConnection().performContextMenuAction(android.R.id.redo);
+                            } else
+                                ic.sendKeyEvent(new KeyEvent(now2 + 1, now2 + 1, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_Z, 0, META_CTRL_ON | META_SHIFT_ON));
 
+                            long nowS = System.currentTimeMillis();
+                            shift = false;
+                            ic.sendKeyEvent(new KeyEvent(nowS, nowS, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT, 0, META_SHIFT_ON));
+
+                            shiftLock = false;
+                            shiftKeyUpdateView();
+                        }
+                    } else {
+                        //Log.e("ctrl", "z");
+                        if (sEditorInfo.imeOptions == 1342177286)//fix for DroidEdit
+                        {
+                            getCurrentInputConnection().performContextMenuAction(android.R.id.undo);
+                        } else
+                            ic.sendKeyEvent(new KeyEvent(now2 + 1, now2 + 1, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_Z, 0, META_CTRL_ON));
+
+                    }
+
+                    break;}
+
+                default:
+                    if (Character.isLetter(code) && shift) {
+                        code = Character.toUpperCase(code);
+                        ic.commitText(String.valueOf(code), 1);
+                        if (!shiftLock) {
+                            long nowS = System.currentTimeMillis();
+                            shift = false;
+                            ic.sendKeyEvent(new KeyEvent(nowS, nowS, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT, 0, META_SHIFT_ON));
+
+                            //Log.e("CodeboardIME", "Unshifted b/c no lock");
+                        }
+                        shiftKeyUpdateView();
+                    }
+                    break;
+            }
     }
-
-    @Override
-    public void swipeRight() {
-    }
-
-    @Override
-    public void swipeUp() {
-
-    }
-
-    public Keyboard chooseKB(int layout, int toprow, int size, int mode) {
+    public Keyboard chooseKB(int layout, int size, int mode) {
         Keyboard keyboard;
+        int[] qwearr_r = new int[]{R.xml.qwerty0r, R.xml.qwerty1r, R.xml.qwerty2r, R.xml.qwerty3r};
+        int[] azearr_r = new int[]{R.xml.azerty0r, R.xml.azerty1r, R.xml.azerty2r, R.xml.azerty3r};
         if (layout == 0) {
-
-            if (toprow == 1) {
-
-                if (size == 0) {
-                    keyboard = new Keyboard(this, R.xml.qwerty0r, mode);
-                } else if (size == 1) {
-                    keyboard = new Keyboard(this, R.xml.qwerty1r, mode);
-                } else if (size == 2) {
-                    keyboard = new Keyboard(this, R.xml.qwerty2r, mode);
-                } else keyboard = new Keyboard(this, R.xml.qwerty3r, mode);
-            } else {
-
-                if (size == 0) {
-                    keyboard = new Keyboard(this, R.xml.qwerty0e, mode);
-                } else if (size == 1) {
-                    keyboard = new Keyboard(this, R.xml.qwerty1e, mode);
-                } else if (size == 2) {
-                    keyboard = new Keyboard(this, R.xml.qwerty2e, mode);
-                } else keyboard = new Keyboard(this, R.xml.qwerty3e, mode);
-            }
+            keyboard = new Keyboard(this,qwearr_r[size],mode);
         } else {
-            if (toprow == 1) {
-                if (size == 0) {
-                    keyboard = new Keyboard(this, R.xml.azerty0r, mode);
-                } else if (size == 1) {
-                    keyboard = new Keyboard(this, R.xml.azerty1r, mode);
-                } else if (size == 2) {
-                    keyboard = new Keyboard(this, R.xml.azerty2r, mode);
-                } else keyboard = new Keyboard(this, R.xml.azerty3r, mode);
-            } else {
-                if (size == 0) {
-                    keyboard = new Keyboard(this, R.xml.azerty0e, mode);
-                } else if (size == 1) {
-                    keyboard = new Keyboard(this, R.xml.azerty1e, mode);
-                } else if (size == 2) {
-                    keyboard = new Keyboard(this, R.xml.azerty2e, mode);
-                } else keyboard = new Keyboard(this, R.xml.azerty3e, mode);
-            }
+            keyboard = new Keyboard(this,azearr_r[size],mode);
         }
+        keyboard.getHeight();
         return keyboard;
-    }
-
-    @Override
-    public View onCreateInputView() {
-
-        SharedPreferences pre = getSharedPreferences("MY_SHARED_PREF", MODE_PRIVATE);
-
-        switch (pre.getInt("RADIO_INDEX_COLOUR", 0)) {
-            case 0:
-                //kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard, null);
-                kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard, null);
-                break;
-            case 1:
-                kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard1, null);
-                break;
-            case 2:
-                kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard2, null);
-                break;
-            case 3:
-                kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard3, null);
-                break;
-            case 4:
-                kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard4, null);
-                break;
-            case 5:
-                kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard5, null);
-                break;
-
-            default:
-                kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard, null);
-
-                break;
-
-
-        }
-
-        if (pre.getInt("PREVIEW", 0) == 1) {
-            kv.setPreviewEnabled(true);
-        } else kv.setPreviewEnabled(false);
-
-        if (pre.getInt("SOUND", 1) == 1) {
-            soundOn = true;
-        } else soundOn = false;
-
-        if (pre.getInt("VIBRATE", 1) == 1) {
-            vibratorOn = true;
-        } else vibratorOn = false;
-
-        shift = false;
-        ctrl = false;
-
-        mLayout = pre.getInt("RADIO_INDEX_LAYOUT", 0);
-        mSize = pre.getInt("SIZE", 2);
-        mToprow = pre.getInt("ARROW_ROW", 1);
-        mKeyboardState = R.integer.keyboard_normal;
-        //reset to normal
-
-        Keyboard keyboard = chooseKB(mLayout, mToprow, mSize, mKeyboardState);
-        kv.setKeyboard(keyboard);
-        kv.setOnKeyboardActionListener(this);
-
-
-        return kv;
     }
 
     @Override
@@ -673,7 +454,6 @@ public class CodeBoardIME extends InputMethodService
         super.onStartInputView(attribute, restarting);
         setInputView(onCreateInputView());
         sEditorInfo = attribute;
-
     }
 
     public void controlKeyUpdateView() {
@@ -695,7 +475,6 @@ public class CodeBoardIME extends InputMethodService
         }
         kv.invalidateKey(i);
     }
-
     public void shiftKeyUpdateView() {
 
         keyboard = kv.getKeyboard();
@@ -716,7 +495,6 @@ public class CodeBoardIME extends InputMethodService
         keyboard.setShifted(shift);
         kv.invalidateAllKeys();
     }
-
     public void handleArrow(int keyCode) {
         InputConnection ic = getCurrentInputConnection();
         Long now2 = System.currentTimeMillis();
@@ -733,9 +511,6 @@ public class CodeBoardIME extends InputMethodService
     }
 
     private void moveSelection(int keyCode) {
-//        inputMethodService.sendDownKeyEvent(KeyEvent.KEYCODE_SHIFT_LEFT, 0);
-//        inputMethodService.sendDownAndUpKeyEvent(dpad_keyCode, 0);
-//        inputMethodService.sendUpKeyEvent(KeyEvent.KEYCODE_SHIFT_LEFT, 0);
         InputConnection ic = getCurrentInputConnection();
         Long now2 = System.currentTimeMillis();
         ic.sendKeyEvent(new KeyEvent(now2, now2, KeyEvent.ACTION_DOWN, KEYCODE_SHIFT_LEFT, 0, META_SHIFT_ON | META_CTRL_ON));
@@ -745,7 +520,74 @@ public class CodeBoardIME extends InputMethodService
         else
             ic.sendKeyEvent(new KeyEvent(now2, now2 , KeyEvent.ACTION_DOWN, keyCode, 0, META_SHIFT_ON));
         ic.sendKeyEvent(new KeyEvent(now2, now2, KeyEvent.ACTION_UP, KEYCODE_SHIFT_LEFT, 0, META_SHIFT_ON | META_CTRL_ON));
+    }
+    private void readMenber(){
+        customStrMenber = new ArrayList<CustomStr>();
+        try
+        {
+            FileInputStream fileInputStream =
+                    new FileInputStream(this.filePath+"/customStrMenber.ser");
+            ObjectInputStream inputStream = new ObjectInputStream(fileInputStream);
+            int size = inputStream.readInt();
+            if(size!=0){
+                for(int i = 0;i < size;i++) {
+                    customStrMenber.add((CustomStr)inputStream.readObject());
+                }inputStream.close();fileInputStream.close();
+            }
+        }catch(IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        updataCustomStr();
+    }
+    private void updataCustomStr(){
+        keyboard = kv.getKeyboard();
+        List<Keyboard.Key> keys = keyboard.getKeys();
+        if(pageNumKey!=null)
+            pageNumKey.label = String.valueOf(pageNum);
+        for (int i = 0; i < keys.size(); i++) {
+            CharSequence label  = keys.get(i).label;
+            if(label != null){
+                if (label.toString().indexOf(",")==2) {
+                    if(label.toString().substring(0,2).equals("00")){
+                        if(pageNumKey==null)
+                            customArr.add(i);
+                        int count = Integer.parseInt(label.toString().split(",")[1])+5*pageNum;
+                        if(count<customStrMenber.size())
+                            keys.get(i).label = ((CustomStr) customStrMenber.get(count)).strName;
+                        else
+                            keys.get(i).label = "None";
+                    }
+                }
+                if(label.toString().equals("pageNum"))
+                    pageNumKey = keys.get(i);
+            }
+        }
+        if(customArr.size()>0){
+            for(int i = 0;i < customArr.size();i++){
+                int tempcount = ((int)customArr.get(i));
+                int count = i+5*pageNum;
+                if(count<customStrMenber.size())
+                    keys.get(tempcount).label = ((CustomStr) customStrMenber.get(count)).strName;
+                else
+                    keys.get(tempcount).label = "None";
+            }
+        }
+        if(pageNumKey!=null)
+            pageNumKey.label = String.valueOf(pageNum);
+        kv.invalidateAllKeys();
+    }
 
-
+    @Override
+    public void swipeDown() {
+        kv.closing();
+    }
+    @Override
+    public void swipeLeft() {
+    }
+    @Override
+    public void swipeRight() {
+    }
+    @Override
+    public void swipeUp() {
     }
 }

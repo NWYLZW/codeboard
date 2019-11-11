@@ -3,26 +3,36 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/intro2color">
     <TextView
-        android:layout_margin="48dp"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@android:color/background_light"
-        android:text="Next, choose CodeBoard as your keyboard"/>
-
-        <Button
-            android:id="@+id/change_button_intro"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="12dp"
+            android:layout_margin="64dp"
+            android:textStyle="bold"
+            android:textSize="24sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose Keyboard"
-            android:onClick="changeButtonIntro"
-            />
+            android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/background_light"
+            android:text="选择CodeBoard"/>
+    <TextView
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/background_light"
+            android:text="作为你的默认输入法"/>
+
+    <Button
+        android:id="@+id/change_button_intro"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="12dp"
+        android:background="@color/skyblue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#777777"
+        android:textSize="24sp"
+        android:text="选择"
+        android:onClick="changeButtonIntro"/>
 
     <ImageView
         android:layout_height="wrap_content"

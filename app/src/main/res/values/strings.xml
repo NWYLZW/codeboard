@@ -1,10 +1,16 @@
 <resources>
-    <string name="app_name">CodeBoard</string>
-    <string name="codeboard_ime">CodeBoard IME</string>
+    <string name="app_name">CodeBoard-Beta</string>
+    <string name="codeboard_ime">CodeBoard-IME</string>
     <string name="subtype_en_US">CodeBoard-%s</string>
     <string name="subtype_fr_FR">CodeBoard-%s</string>
-    <string name="printf">printf(\"\");</string>
-    <string name="scanf">scanf(\"\");</string>
-    <string name="for_">for(;;){\n\t}</string>
-    <string name="app_intro">CodeBoard - Intro</string>
+
+    <string name="printf">printf(\"$END$\");</string>
+    <string name="scanf">scanf(\"$END$\");</string>
+    <string name="for_">for($END$;;){\n\t\n}</string>
+
+    <string name="app_intro">CodeBoard-Introduce</string>
+    <string name="app_sponsor">CodeBoard-Sponsor</string>
+    <string name="app_greater">CodeBoard-高级设置</string>
+
+    <string name="setting_01">自定义快捷栏</string>
 </resources>

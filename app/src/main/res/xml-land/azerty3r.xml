@@ -1,6 +1,6 @@
 <Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
     android:horizontalGap="0px"
-	android:keyHeight="10%p"
+	android:keyHeight="8%p"
     android:verticalGap="0px"
     >
 
@@ -140,7 +140,7 @@
     </Row>
     <Row
         android:keyWidth = "8.3%p"
-	android:keyHeight="8%p"
+	android:keyHeight="7%p"
         >
 		<Key
             android:codes="43"

@@ -1,6 +1,6 @@
 <Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
     android:horizontalGap="0px"
-	android:keyHeight="7%p"
+	android:keyHeight="6%p"
     android:verticalGap="0px"
     >
 
@@ -8,7 +8,7 @@
         android:keyboardMode="@integer/keyboard_normal"
         android:rowEdgeFlags="top"
         android:keyWidth="15%p"
-	android:keyHeight="6%p"
+		android:keyHeight="5%p"
        >
     
 	<Key
@@ -53,7 +53,7 @@
         android:keyboardMode="@integer/keyboard_sym"
         android:rowEdgeFlags="top"
         android:keyWidth="15%p"
-	android:keyHeight="6%p"
+		android:keyHeight="5%p"
        >    
 	<Key
     android:keyWidth="13%p"
@@ -95,7 +95,7 @@
     
     <Row
         android:keyWidth = "7.7%p"
-	android:keyHeight="6%p"
+		android:keyHeight="5%p"
         >
         <Key
             android:codes="40"
@@ -140,7 +140,7 @@
     </Row>
     <Row
         android:keyWidth = "8.3%p"
-	android:keyHeight="6%p"
+		android:keyHeight="5%p"
         >
 		<Key
             android:codes="43"
@@ -187,7 +187,7 @@
     <Row
         android:keyWidth = "10%p"
         android:keyboardMode="@integer/keyboard_normal"
-	android:keyHeight="7%p"
+	android:keyHeight="6%p"
         >
         <Key
             android:codes="97"
@@ -231,7 +231,7 @@
     <Row
         android:keyWidth = "9%p"
         android:keyboardMode="@integer/keyboard_normal"
-	android:keyHeight="7%p"
+	android:keyHeight="6%p"
         >
         <Key
             android:keyEdgeFlags="left"
@@ -274,7 +274,7 @@
 
     <Row
         android:keyboardMode="@integer/keyboard_normal"
-	android:keyHeight="7%p"
+	android:keyHeight="6%p"
         >
         <Key
             android:codes="16"
@@ -320,7 +320,7 @@
 
     <Row
         android:keyboardMode="@integer/keyboard_sym"
-	android:keyHeight="7%p"
+	android:keyHeight="6%p"
         android:keyWidth ="10%p"
         >
 		<Key
@@ -366,7 +366,7 @@
 
     <Row
         android:keyboardMode="@integer/keyboard_sym"
-	android:keyHeight="7%p"
+	android:keyHeight="6%p"
         android:keyWidth="15%p"
         >
         
@@ -399,7 +399,7 @@
         <Row
     	android:keyWidth ="10%p"
         android:keyboardMode="@integer/keyboard_sym"
-	android:keyHeight="7%p"
+	android:keyHeight="6%p"
         >
         <Key
         	android:keyWidth="10%p"
@@ -431,7 +431,7 @@
     </Row>
 
     <Row        
-	android:keyHeight="7%p"
+	android:keyHeight="6%p"
         android:rowEdgeFlags="bottom">
         <Key
             android:keyEdgeFlags="left"
